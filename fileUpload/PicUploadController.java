@@ -26,6 +26,7 @@ import Util;//参见本文件下的Util
 /**
 * @Author 王先虎
 * 图片上传类
+* 关于base64加解密参见 encryption下的FileBase64
 */
 @Controller
 public class PicUploadController {
@@ -91,42 +92,6 @@ public class PicUploadController {
 		System.out.println("encOption:"+encOption.toString());
 		return encOption;
 	}
-	/**
-	*
-	*/
-	@RequestMapping(value = "/GenerateImage", method = RequestMethod.POST)
-	public String GenerateImage(@RequestBody Map<String, String> map){//对字节数组字符串进行Base64解码并生成图片  
-	    String imgStr=map.get("imgStr");    
-		if (imgStr == null) //图像数据为空  
-	    return "false";  
-	        try   
-	        {  
-	            //Base64解码  
-	            byte[] b = Base64.getDecoder().decode(imgStr);  
-	            for(int i=0;i<b.length;++i)  
-	            {  
-	                if(b[i]<0)  
-	                {//调整异常数据  
-	                    b[i]+=256;  
-	                }  
-	            }  
-	            File folder=new File("D:\\tupian");//文件夹
-				if(!folder.exists()) {//判断是否有文件夹，如果没有则创建
-					folder.mkdirs();
-				}
-	            //生成jpeg图片  
-	            String imgFilePath = "D:\\tupian\\new.jpg";//新生成的图片  
-	            OutputStream out = new FileOutputStream(imgFilePath);      
-	            out.write(b);  
-	            out.flush();  
-	            out.close();  
-	            return "true";  
-	        }   
-	        catch (Exception e)   
-	        {  
-	            return "false";  
-	        }  
-	}  
 	/**
 	 * 上传图片接口 基于流
 	 * @param file 文件对象
